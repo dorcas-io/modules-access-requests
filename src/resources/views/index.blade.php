@@ -23,23 +23,21 @@
         <div class="tab-content">
             <div class="tab-pane container active" id="request_access">
                 <br/>
-                <div class="row mt-4">
-                    <form method="get" action="" v-on:submit.prevent="searchBusinesses">
-                        <div class="form-group">
+                <form method="get" action="" v-on:submit.prevent="searchBusinesses">
+                	<div class="row">
+                        <div class="form-group col-md-12">
                             <input class="form-control" id="title" type="text" name="title" v-model="search_term" required v-bind:readonly="searching">
                             <label for="title">Search Business by Name, or Email</label>
                         </div>
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary" name="search_businesses" value="1" v-bind:class="{'disabled': searching}">Search</button>
-                            <div class="progress" v-if="searching">
-                                <div class="indeterminate"></div>
-                            </div>
+                            <button type="submit" class="btn btn-primary" name="search_businesses" value="1" v-bind:class="{'btn-loading': searching}">Search</button>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                </form>
                 <div class="row" v-if="businesses.length > 0">
                     <access-grant-company-card class="col s12 m4" v-for="(company, index) in businesses" :key="company.id" :company="company" :index="index" v-on:request-modules="showModuleRequestDialog"></access-grant-company-card>
-                </div>                
+                </div>
+                @include('modules-access-requests::modals.request-access')           
             </div>
             <div class="tab-pane container" id="access_requests">
                 <br/>
@@ -61,9 +59,7 @@
                     <div class="row" v-if="grants.grants.length === 0 && grants.is_processing">
                     	<div class="loader"></div>
                     	<div>Loading Apps</div>
-                    </div>		            
-		            @include('modules-access-requests::modals.request-access')
-		            @include('directory.modals.request-access')
+                    </div>
 		        </div>
             </div>
         </div>
@@ -110,7 +106,7 @@
                     axios.get("/xhr/businesses", {
                         params: {search: context.search_term}
                     }).then(function (response) {
-                        console.log(response);
+                        //console.log(response);
                         context.searching = false;
                         if (response.data.total == 0) {
                             return swal("Oops!", 'No matching businesses were found.', "info");
@@ -144,7 +140,7 @@
                         return;
                     }
                     this.business = business;
-                    $('#request-access-modal').modal('open');
+                    $('#request-access-modal').modal('show');
                 },
                 changePage: function (number) {
                     this.page_number = parseInt(number, 10);

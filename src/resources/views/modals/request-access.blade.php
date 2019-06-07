@@ -13,7 +13,7 @@
                 <div class="row">
                     <div class="form-group col-md-6 col-lg-4" v-for="module in available_modules" :key="module.id" v-if="!module.is_readonly">
                         <label class="custom-switch">
-                            <input type="radio" name="modules[]" v-bind:value="module.id" v-bind:checked="module.enabled" class="custom-switch-input">
+                            <input type="checkbox" name="modules[]" multiple v-bind:value="module.id" v-bind:checked="!module.enabled" class="custom-switch-input">
                             <span class="custom-switch-indicator"></span>
                             <span class="custom-switch-description">@{{ module.name }}</span>
                         </label>

@@ -19,15 +19,55 @@ class ModulesAccessRequestsController extends Controller {
         $this->data = [
             'page' => ['title' => config('modules-access-requests.title')],
             'header' => ['title' => config('modules-access-requests.title')],
-            'selectedMenu' => 'access-requests'
+            'selectedMenu' => 'modules-access-requests',
+            'submenuConfig' => 'navigation-menu.modules-access-requests.sub-menu',
+            'submenuAction' => ''
         ];
     }
 
-    public function index()
+    public function index(Request  $request)
     {
     	$this->data['availableModules'] = HomeController::SETUP_UI_COMPONENTS;
+        $this->setViewUiResponse($request);
     	return view('modules-access-requests::index', $this->data);
     }
+
+
+    /**
+     * @param Request $request
+     * @param Sdk     $sdk
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function post(Request $request, Sdk $sdk)
+    {
+        $this->validate($request, [
+            'business_id' => 'required|string',
+            'modules' => 'required|array',
+            'modules.*' => 'required|string'
+        ]);
+        # validate the request
+        try {
+            $query = $sdk->createCompanyResource($request->input('business_id'));
+            $data = $request->only(['modules']);
+            foreach ($data as $key => $value) {
+                $query->addBodyParam($key, $value);
+            }
+            $query = $query->send('post', ['access-grant-requests']);
+            # send the request
+            if (!$query->isSuccessful()) {
+                $message = $response->errors[0]['title'] ?? '';
+                throw new \RuntimeException('Failed while sending the request. '.$message);
+            }
+            $response = (tabler_ui_html_response(['Successfully sent the request.']))->setType(UiResponse::TYPE_SUCCESS);
+        } catch (\Exception $e) {
+            $response = (tabler_ui_html_response([$e->getMessage()]))->setType(UiResponse::TYPE_ERROR);
+        }
+        return redirect(url()->current())->with('UiResponse', $response);
+    }
+
+
 
     /**
      * @param Request $request
