@@ -4,6 +4,8 @@ Route::group(['namespace' => 'Dorcas\ModulesAccessRequests\Http\Controllers', 'm
     Route::get('access-requests-main', 'ModulesAccessRequestsController@index')->name('access-requests-main');
     Route::get('/access-grants-for-user', 'ModulesAccessRequestsController@searchByUser');
     Route::post('/access-requests-main', 'ModulesAccessRequestsController@post');
+
+    Route::get('/access-business-search', 'ModulesAccessRequestsController@search');
 });
 
 ?>

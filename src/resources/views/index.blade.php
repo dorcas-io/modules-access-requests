@@ -10,7 +10,7 @@
 
     <div class="col-md-9 col-xl-9" id="access-requests-main">
 
-        You can request for access to an SME&apos;s Dorcas account using the <strong>Request Access</strong> tab. The <strong>Access Requests</strong> tab allows you to manage the status of existing requests:
+        You can request for access to another business&apos; Hub account using the <strong>Request Access</strong> tab. The <strong>Access Requests</strong> tab allows you to manage the status of existing requests:
         <ul class="nav nav-tabs nav-justified">
             <li class="nav-item">
                 <a class="nav-link active" data-toggle="tab" href="#request_access">Request Access</a>
@@ -27,7 +27,7 @@
                 	<div class="row">
                         <div class="form-group col-md-12">
                             <input class="form-control" id="title" type="text" name="title" v-model="search_term" required v-bind:readonly="searching">
-                            <label for="title">Search Business by Name, or Email</label>
+                            <label for="title">Search Business by their exact Email Address</label>
                         </div>
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary" name="search_businesses" value="1" v-bind:class="{'btn-loading': searching}">Search</button>
@@ -50,7 +50,7 @@
 		                    @slot('title')
 		                        No (existing) Requests
 		                    @endslot
-		                    To gain access to your SME Clients&apos;s Modules, you first need to place a request.
+		                    To gain access to a business&apos; Hub modules, you first need to place a request.
 		                    @slot('buttons')
 		                        <a href="#" v-on:click.prevent="openTab('request_access')" class="btn btn-primary btn-sm">Request Access</a>
 		                    @endslot
@@ -88,7 +88,7 @@
                 }
             },
             mounted: function () {
-                this.fetchRequests();
+                //this.fetchRequests();
             },
             methods: {
             	openTab: function (tab) {
@@ -103,7 +103,7 @@
                 searchBusinesses: function () {
                     let context = this;
                     this.searching = true;
-                    axios.get("/xhr/businesses", {
+                    axios.get("/mpa/access-business-search", {
                         params: {search: context.search_term}
                     }).then(function (response) {
                         //console.log(response);
