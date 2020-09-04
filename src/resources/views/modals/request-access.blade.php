@@ -25,7 +25,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="submit" name="action" form="form-request-access" value="request_access" class="btn btn-primary">Send Request</button>
+        <button type="submit" name="action" form="form-request-access" value="request_access" :class="{'btn-loading':requesting}" class="btn btn-primary" v-on:click="requestAccess">Send Request</button>
       </div>
     </div>
   </div>

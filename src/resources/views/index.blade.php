@@ -85,10 +85,11 @@
                     meta: [],
                     page_number: 1,
                     is_processing: false,
-                }
+                },
+                requesting: false
             },
             mounted: function () {
-                //this.fetchRequests();
+                this.fetchRequests();
             },
             methods: {
             	openTab: function (tab) {
@@ -100,6 +101,9 @@
 					    $('.nav-tabs a[href="#' + url.split('#')[1] + '"]').tab('show');
 					}
             	},
+                requestAccess: function() {
+                    this.requesting = true;
+                },
                 searchBusinesses: function () {
                     let context = this;
                     this.searching = true;
@@ -118,8 +122,10 @@
                         if (error.response) {
                             // The request was made and the server responded with a status code
                             // that falls out of the range of 2xx
-                            var e = error.response.data.errors[0];
-                            message = e.title;
+                            //var e = error.response.data.errors[0];
+                            //message = e.title;
+                            var e = error.response;
+                            message = e.data.message;
                         } else if (error.request) {
                             // The request was made but no response was received
                             // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
@@ -156,7 +162,7 @@
                             page: context.page_number
                         }
                     }).then(function (response) {
-                        console.log(response.data);
+                        //console.log(response.data);
                         context.grants.is_processing = false;
                         context.grants.grants = response.data.data;
                         context.grants.meta = response.data.meta;

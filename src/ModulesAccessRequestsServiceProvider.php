@@ -11,7 +11,7 @@ class ModulesAccessRequestsServiceProvider extends ServiceProvider {
 		$this->loadViewsFrom(__DIR__.'/resources/views', 'modules-access-requests');
 		$this->publishes([
 			__DIR__.'/config/modules-access-requests.php' => config_path('modules-access-requests.php'),
-		], 'config');
+		], 'dorcas-modules');
 		/*$this->publishes([
 			__DIR__.'/assets' => public_path('vendor/modules-access-requests')
 		], 'public');*/
